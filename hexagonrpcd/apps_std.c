@@ -414,6 +414,25 @@ static uint32_t apps_std_stat(void *data,
 	return 0;
 }
 
+static uint32_t apps_std_frename(void *data,
+				 const struct fastrpc_io_buffer *inbufs,
+				 struct fastrpc_io_buffer *outbufs)
+{
+	if (((const char *) inbufs[1].p)[inbufs[1].s - 1] != 0)
+		return AEE_EBADPARM;
+
+	if (((const char *) inbufs[2].p)[inbufs[2].s - 1] != 0)
+		return AEE_EBADPARM;
+
+#ifdef HEXAGONRPC_VERBOSE
+	printf("frename %s -> %s\n", (const char *) inbufs[1].p, (const char *) inbufs[2].p);
+#endif
+
+	// FIXME
+
+	return 0;
+}
+
 static uint32_t apps_std_fclose_fd(void *data,
 				   const struct fastrpc_io_buffer *inbufs,
 				   struct fastrpc_io_buffer *outbufs)
@@ -582,7 +601,10 @@ static const struct fastrpc_function_impl apps_std_procs[] = {
 		.impl = apps_std_stat,
 	},
 	{ .def = NULL, .impl = NULL, },
-	{ .def = NULL, .impl = NULL, },
+	{
+		.def = &apps_std_frename_def,
+		.impl = apps_std_frename,
+	},
 	{ .def = NULL, .impl = NULL, },
 	{
 		.def = &apps_std_fclose_fd_def,

@@ -142,7 +142,7 @@ static int return_for_next_invoke(int fd,
 				  struct fastrpc_io_buffer **decoded)
 {
 	struct fastrpc_decoder_context *ctx;
-	char inbufs[256];
+	char inbufs[1024];
 	char *outbufs = NULL;
 	uint32_t inbufs_len;
 	uint32_t outbufs_len;
@@ -164,7 +164,7 @@ static int return_for_next_invoke(int fd,
 				  *rctx, result,
 				  outbufs_len, outbufs,
 				  rctx, handle, sc,
-				  &inbufs_len, 256, inbufs);
+				  &inbufs_len, sizeof(inbufs), inbufs);
 	if (ret) {
 		if (ret == -1)
 			perror("Could not fetch next FastRPC message");
@@ -174,8 +174,8 @@ static int return_for_next_invoke(int fd,
 		goto err_free_outbufs;
 	}
 
-	if (inbufs_len > 256) {
-		fprintf(stderr, "Large (>256B) input buffers aren't implemented\n");
+	if (inbufs_len > sizeof(inbufs)) {
+		fprintf(stderr, "Large (%u bytes) input buffers aren't implemented\n", inbufs_len);
 		ret = -1;
 		goto err_free_outbufs;
 	}
