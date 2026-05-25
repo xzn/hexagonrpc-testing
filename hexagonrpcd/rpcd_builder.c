@@ -33,6 +33,7 @@
 #define SNS_REG_VERSION		"/sensors/registry/sns_reg_version"
 #define SNS_REG_CONFIG		"/sensors/sns_reg.conf"
 #define SYSFS_SOCINFO		"/socinfo/"
+#define SNS_REG_TEMP		"/sensors/temp.json"
 
 static struct hexagonfs_dirent *hfs_mkdir(const char *name, size_t n_ents, ...)
 {
@@ -112,7 +113,7 @@ static struct hexagonfs_dirent *hfs_map_or_empty(const char *name, const char *p
  */
 struct hexagonfs_dirent *construct_root_dir(const char *prefix, const char *dsp)
 {
-	char *acdbdata, *dsp_libs, *sns_cfg, *sns_reg, *sns_reg_version, *sns_reg_config, *socinfo;
+	char *acdbdata, *dsp_libs, *sns_cfg, *sns_reg, *sns_reg_version, *sns_reg_config, *socinfo, *sns_reg_temp;
 	size_t n_prefix;
 	struct hexagonfs_dirent *persist_dir, *vendor_dir;
 
@@ -124,6 +125,7 @@ struct hexagonfs_dirent *construct_root_dir(const char *prefix, const char *dsp)
 	sns_reg_version = malloc(n_prefix + strlen(SNS_REG_VERSION) + 1);
 	sns_reg_config = malloc(n_prefix + strlen(SNS_REG_CONFIG) + 1);
 	socinfo = malloc(n_prefix + strlen(SYSFS_SOCINFO) + 1);
+	sns_reg_temp = malloc(n_prefix + strlen(SNS_REG_TEMP) + 1);
 
 	dsp_libs = malloc(n_prefix + strlen(DSP_LIBS) + strlen(dsp) + 1);
 
@@ -163,15 +165,21 @@ struct hexagonfs_dirent *construct_root_dir(const char *prefix, const char *dsp)
 		strcat(dsp_libs, dsp);
 	}
 
+	if (sns_reg_temp != NULL) {
+		strcpy(sns_reg_temp, prefix);
+		strcat(sns_reg_temp, SNS_REG_TEMP);
+	}
+
 	/*
 	 * Some platforms need this in / and some need it in /mnt/vendor. Form
 	 * a hard link between both locations.
 	 */
 	persist_dir = hfs_mkdir("persist", 1,
 				hfs_mkdir("sensors", 1,
-					hfs_mkdir("registry", 2,
+					hfs_mkdir("registry", 3,
 						hfs_map("registry", sns_reg),
-						hfs_map("sns_reg_version", sns_reg_version)
+						hfs_map("sns_reg_version", sns_reg_version),
+						hfs_map("temp.json", sns_reg_temp)
 					)
 				)
 		      );
