@@ -1,11 +1,11 @@
 /*
- * FastRPC interface list for building method definitions
+ * FastRPC operating system interface - context initialization
  *
- * Copyright (C) 2023 The Sensor Shell Contributors
+ * Copyright (C) 2024 The Sensor Shell Contributors
  *
- * This file is part of sensh.
+ * This file is part of HexagonRPC.
  *
- * Sensh is free software: you can redistribute it and/or modify
+ * HexagonRPC is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
@@ -19,10 +19,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#define HEXAGONRPC_BUILD_METHOD_DEFINITIONS 1
+#ifndef SNS_REGISTRY_H
+#define SNS_REGISTRY_H
 
-#include "interfaces/adsp_default_listener.def"
-#include "interfaces/apps_mem.def"
-#include "interfaces/apps_std.def"
-#include "interfaces/adsp_listener.def"
-#include "interfaces/sns_registry.def"
+#include "listener.h"
+
+struct fastrpc_interface *fastrpc_sns_registry_init(void);
+void fastrpc_sns_registry_deinit(struct fastrpc_interface *iface);
+
+#endif

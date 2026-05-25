@@ -37,6 +37,7 @@
 #include "aee_error.h"
 #include "apps_mem.h"
 #include "apps_std.h"
+#include "sns_registry.h"
 #include "hexagonfs.h"
 #include "interfaces/adsp_default_listener.def"
 #include "listener.h"
@@ -254,7 +255,7 @@ static void *start_reverse_tunnel(int fd, const char *device_dir, const char *ds
 {
 	struct fastrpc_interface **ifaces;
 	struct hexagonfs_dirent *root_dir;
-	size_t n_ifaces = 3;
+	size_t n_ifaces = 4;
 	int ret;
 
 	ifaces = malloc(sizeof(struct fastrpc_interface) * n_ifaces);
@@ -273,6 +274,7 @@ static void *start_reverse_tunnel(int fd, const char *device_dir, const char *ds
 	// Dynamic interfaces with no hardcoded handle
 	ifaces[1] = fastrpc_apps_std_init(root_dir);
 	ifaces[2] = fastrpc_apps_mem_init(fd);
+	ifaces[3] = fastrpc_sns_registry_init();
 
 	ret = register_fastrpc_listener(fd);
 	if (ret)

@@ -47,6 +47,8 @@ extern const struct fastrpc_interface localctl_interface;
 extern const struct fastrpc_interface apps_mem_interface;
 extern const struct fastrpc_interface apps_std_interface;
 
+extern const struct fastrpc_interface sns_registry_interface;
+
 int run_fastrpc_listener(int fd,
 			 size_t n_ifaces,
 			 struct fastrpc_interface **ifaces);

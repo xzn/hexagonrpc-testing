@@ -1,7 +1,7 @@
 /*
- * FastRPC interface list for building method definitions
+ * FastRPC operating system interface
  *
- * Copyright (C) 2023 The Sensor Shell Contributors
+ * Copyright (C) 2024 The Sensor Shell Contributors
  *
  * This file is part of sensh.
  *
@@ -19,10 +19,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#define HEXAGONRPC_BUILD_METHOD_DEFINITIONS 1
+#ifndef INTERFACE_SNS_REGISTRY_DEF
+#define INTERFACE_SNS_REGISTRY_DEF
 
-#include "interfaces/adsp_default_listener.def"
-#include "interfaces/apps_mem.def"
-#include "interfaces/apps_std.def"
-#include "interfaces/adsp_listener.def"
-#include "interfaces/sns_registry.def"
+#include <libhexagonrpc/interface.h>
+
+HEXAGONRPC_DEFINE_REMOTE_METHOD(0, sns_registry_get_property, 0, 1, 0, 1)
+
+#endif /* INTERFACE_SNS_REGISTRY_DEF */
