@@ -30,7 +30,7 @@
 #define DSP_LIBS		"/dsp/"
 #define SENSORS_CONFIG		"/sensors/config/"
 #define SENSORS_REGISTRY	"/sensors/registry/"
-#define SNS_REG_VERSION		"/sensors/sns_reg_version"
+#define SNS_REG_VERSION		"/sensors/registry/sns_reg_version"
 #define SNS_REG_CONFIG		"/sensors/sns_reg.conf"
 #define SYSFS_SOCINFO		"/socinfo/"
 
@@ -144,7 +144,7 @@ struct hexagonfs_dirent *construct_root_dir(const char *prefix, const char *dsp)
 
 	if (sns_reg_version != NULL) {
 		strcpy(sns_reg_version, prefix);
-		strcat(sns_reg_version, SNS_REG_CONFIG);
+		strcat(sns_reg_version, SNS_REG_VERSION);
 	}
 
 	if (sns_reg_config != NULL) {

@@ -148,20 +148,12 @@ static uint32_t apps_std_fwrite(void *data,
 	printf("\n");
 #endif
 
-	const uint8_t fake_buf_dir[] = {0x44, 0x49, 0x52}; // "DIR"
-	const uint8_t fake_buf_version3[] = {0x76, 0x65, 0x72, 0x73, 0x69, 0x6f, 0x6e, 0x3d, 0x33}; // "version=3"
-	if ((first_in->buf_size == 3 && memcmp(buf, fake_buf_dir, 3) == 0) ||
-		(first_in->buf_size == 9 && memcmp(buf, fake_buf_version3, 9) == 0)) {
+	first_out->written = first_in->buf_size;
+	first_out->is_eof = 0;
 
-		first_out->written = first_in->buf_size;
-		first_out->is_eof = 0;
+	printf("WARNING: Faking successful fwrite call\n");
 
-		printf("WARNING: Faking successful fwrite call for \"%s\"!\n", buf);
-
-		return 0;
-	}
-
-	return AEE_EFAILED;
+	return 0;
 }
 
 static uint32_t apps_std_fseek(void *data,
